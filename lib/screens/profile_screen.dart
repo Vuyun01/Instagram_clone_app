@@ -298,53 +298,63 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             color: Colors.white60))
                   ])),
                 ),
-                HeadlineSection(
-                  label: 'See all',
-                  onTap: () {},
-                  title: 'Discover people',
-                ),
                 _isUser
-                    ? SizedBox(
-                        height: size.height * 0.3,
-                        // color: Colors.cyan,
-                        child: ListView.builder(
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            itemCount: _users.length,
-                            itemBuilder: (context, index) => FittedBox(
-                                  child: FollowPeopleCard(
-                                      user: _users[index],
-                                      onTap: () {
-                                        Navigator.of(context).pushNamed(
-                                            ProfileScreen.routeName,
-                                            arguments: _users[index]!.uid);
-                                      }),
-                                )),
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          HeadlineSection(
+                            label: 'See all',
+                            onTap: () {},
+                            title: 'Discover people',
+                          ),
+                          SizedBox(
+                            height: size.height * 0.3,
+                            // color: Colors.cyan,
+                            child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: _users.length,
+                                itemBuilder: (context, index) => FollowPeopleCard(
+                                    user: _users[index],
+                                    onTap: () {
+                                      Navigator.of(context).pushNamed(
+                                          ProfileScreen.routeName,
+                                          arguments: _users[index]!.uid);
+                                    })),
+                          )
+                        ],
                       )
                     : const SizedBox(),
                 Padding(
-                  padding: const EdgeInsets.only(top: 20),
-                  child: GridView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: _posts.length,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              mainAxisSpacing: 2,
-                              crossAxisSpacing: 2,
-                              childAspectRatio: 1,
-                              crossAxisCount: 3),
-                      itemBuilder: (context, index) => Card(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image.network(
-                              _posts[index]!.postUrl,
-                              fit: BoxFit.cover,
-                            ),
-                          ))),
-                )
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                  child: Text(
+                    'Discover published posts',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge!
+                        .copyWith(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
+                ),
+                GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: _posts.length,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            mainAxisSpacing: 2,
+                            crossAxisSpacing: 2,
+                            childAspectRatio: 1,
+                            crossAxisCount: 3),
+                    itemBuilder: (context, index) => Card(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.network(
+                            _posts[index]!.postUrl,
+                            fit: BoxFit.cover,
+                          ),
+                        )))
               ],
             ),
           ),
