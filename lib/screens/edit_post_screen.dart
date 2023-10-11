@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:instagram_clone/model/post.dart';
 import 'package:instagram_clone/provider/user_provider.dart';
 import 'package:instagram_clone/service/post_service.dart';
 import 'package:instagram_clone/service/storage_service.dart';
@@ -11,15 +12,15 @@ import 'package:provider/provider.dart';
 
 import '../utils/utils.dart';
 
-class AddPostScreen extends StatefulWidget {
-  const AddPostScreen({super.key});
-  static const String routeName = '/addPost';
+class EditPostScreen extends StatefulWidget {
+  const EditPostScreen({super.key});
+  static const String routeName = '/edit_post';
 
   @override
-  State<AddPostScreen> createState() => _AddPostScreenState();
+  State<EditPostScreen> createState() => _EditPostScreenState();
 }
 
-class _AddPostScreenState extends State<AddPostScreen> {
+class _EditPostScreenState extends State<EditPostScreen> {
   TextEditingController _captionController = TextEditingController();
   PostService _postService = PostService();
 
@@ -30,6 +31,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
   }
 
   Uint8List? _image;
+  String? postId;
   bool _isLoading = false;
   void _pickImage() {
     showDialog(
@@ -77,19 +79,20 @@ class _AddPostScreenState extends State<AddPostScreen> {
     });
     final caption = _captionController.text;
     await _postService
-        .uploadPost(
+        .updatePost(
       description: caption,
       image: _image,
+      postid: postId!,
     )
         .then((value) {
       // print(_image);
 
       if (value == 'success') {
-        FocusScope.of(context).unfocus();
         _image = null;
         _captionController.clear();
         showSnackbar(context, 'You\'ve just published a post. Check it out',
             Colors.lightGreen);
+        Navigator.of(context).pop();
       } else {
         showSnackbar(context, value, Colors.red);
       }
@@ -102,14 +105,15 @@ class _AddPostScreenState extends State<AddPostScreen> {
   @override
   Widget build(BuildContext context) {
     final user = context.read<UserProvider>().getUser;
+    final post = ModalRoute.of(context)?.settings.arguments as Post?;
+    postId = post!.postid;
     final size = MediaQuery.of(context).size;
     final inputBorder = OutlineInputBorder(
         borderSide: Divider.createBorderSide(context, color: Colors.blueGrey),
         borderRadius: BorderRadius.circular(10));
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: const Text('Add Post'),
+        title: const Text('Edit Post'),
         backgroundColor: mobileBackgroundColor,
         elevation: 5,
         shadowColor: Colors.grey.shade800,

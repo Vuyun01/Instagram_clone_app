@@ -119,19 +119,31 @@ class PostService {
   }
 
   Future<String> updatePost(
-      {required String postId,
-      required String userId,
-      required Post post}) async {
+      {required postid,
+      required String description,
+      required Uint8List? image}) async {
     var res = 'Something went wrong';
     try {
-      await _firestore
-          .collection(FirebaseConstant.postCollection)
-          .doc(userId)
-          .collection(FirebaseConstant.subPostCollection)
-          .where(PostConstant.postid, isEqualTo: postId)
-          .get()
-          .then((query) => query.docs.first.reference.update(post.toMap()));
-      res = 'success';
+      if (description.isNotEmpty && image != null) {
+        final uid = AuthService().userID;
+        final postUrl = await StorageService().uploadImageToStorage(
+            uid, FirebaseConstant.postImageStorage, image, true);
+        print(description);
+        print(postUrl);
+        await _firestore
+            .collection(FirebaseConstant.postCollection)
+            .doc(uid)
+            .collection(FirebaseConstant.subPostCollection)
+            .where(PostConstant.postid, isEqualTo: postid)
+            .get()
+            .then((query) => query.docs.first.reference.update({
+                  PostConstant.postUrl: postUrl,
+                  PostConstant.description: description
+                }));
+        res = 'success';
+      } else {
+        res = 'Please meet required fields before publish your post';
+      }
     } catch (e) {
       res = e.toString();
     }
@@ -149,6 +161,7 @@ class PostService {
     } catch (e) {
       print(e.toString());
     }
+    return null;
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>?> fetchPostsById(
@@ -194,7 +207,7 @@ class PostService {
             .then((query) => query.docs.forEach((doc) {
                   doc.reference.update(newData);
                 }));
-      } 
+      }
     } on FirebaseException catch (e) {
       print(e.message!);
     } catch (e) {

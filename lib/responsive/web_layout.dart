@@ -41,8 +41,7 @@ class _WebLayoutState extends State<WebLayout> {
           _buildNavigationButton(icon: Icons.home, index: 0),
           _buildNavigationButton(icon: Icons.search_rounded, index: 1),
           _buildNavigationButton(icon: Icons.add_circle_rounded, index: 2),
-          _buildNavigationButton(icon: Icons.favorite, index: 3),
-          _buildNavigationButton(icon: Icons.person, index: 4),
+          _buildNavigationButton(icon: Icons.person, index: 3),
           IconButton(
               splashColor: Colors.transparent,
               onPressed: () async {

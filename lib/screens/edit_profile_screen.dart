@@ -27,9 +27,9 @@ class _EditProfileScreenState extends State<EditProfileScreen>
   void _saveForm() async {
     if (_formKey.currentState!.validate()) {
       final uid = _authService.userID;
-      _formKey.currentState!.save();
       print(username);
       print(bio);
+      _formKey.currentState!.save();
       await _userService.updateUser(uid: uid, newData: {
         UserConstant.username: username,
         UserConstant.bio: bio

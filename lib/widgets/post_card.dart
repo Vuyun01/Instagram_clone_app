@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/provider/user_provider.dart';
 import 'package:instagram_clone/screens/comment_screen.dart';
+import 'package:instagram_clone/screens/edit_post_screen.dart';
 import 'package:instagram_clone/service/post_service.dart';
 import 'package:instagram_clone/utils/enums.dart';
 import 'package:instagram_clone/utils/utils.dart';
@@ -167,18 +168,9 @@ class PostCardHeader extends StatelessWidget {
                                   ],
                                 ));
                       } else {
-                        // await PostService()
-                        //     .updatePost(postId: post.postid, userId: user.uid, post: null)
-                        //     .then((value) {
-                        //   if (value == 'success') {
-                        //     showSnackbar(
-                        //         context,
-                        //         'Deleted this post successfully!',
-                        //         Colors.lightGreen);
-                        //   } else {
-                        //     showSnackbar(context, value, Colors.lightGreen);
-                        //   }
-                        // });
+                        Navigator.of(context).pushNamed(
+                            EditPostScreen.routeName,
+                            arguments: post);
                         print('Edit post');
                       }
                     }
@@ -291,7 +283,7 @@ class PostCardBody extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(left: 10.0, top: 10),
           child: Text(
-            'Posted: ${DateFormat.yMMMEd().add_jm().format(post.datePublished)}',
+            'Posted: ${timeAgo(post.datePublished)}',
             style: Theme.of(context)
                 .textTheme
                 .bodySmall!

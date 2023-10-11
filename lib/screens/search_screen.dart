@@ -40,9 +40,15 @@ class _SearchScreenState extends State<SearchScreen> {
                       size.width > mobileScreenSize ? size.width * 0.25 : 0),
               child: TextField(
                 onSubmitted: (value) {
-                  setState(() {
-                    _isSearchUser = true;
-                  });
+                  if (value.isNotEmpty) {
+                    setState(() {
+                      _isSearchUser = true;
+                    });
+                  } else {
+                    setState(() {
+                      _isSearchUser = false;
+                    });
+                  }
                 },
                 // onChanged: (value){
                 //   keyword = value;

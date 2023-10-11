@@ -7,6 +7,7 @@ import 'package:instagram_clone/responsive/responsive_layout.dart';
 import 'package:instagram_clone/responsive/web_layout.dart';
 import 'package:instagram_clone/screens/add_post_screen.dart';
 import 'package:instagram_clone/screens/comment_screen.dart';
+import 'package:instagram_clone/screens/edit_post_screen.dart';
 import 'package:instagram_clone/screens/edit_profile_screen.dart';
 import 'package:instagram_clone/screens/login_screen.dart';
 import 'package:instagram_clone/screens/profile_screen.dart';
@@ -74,7 +75,8 @@ class MyApp extends StatelessWidget {
           AddPostScreen.routeName: (context) => const AddPostScreen(),
           CommentScreen.routeName: (context) => const CommentScreen(),
           ProfileScreen.routeName: (context) => const ProfileScreen(),
-          EditProfileScreen.routeName:(context) => const EditProfileScreen()
+          EditProfileScreen.routeName: (context) => const EditProfileScreen(),
+          EditPostScreen.routeName: (context) => const EditPostScreen()
         },
       ),
     );
