@@ -11,6 +11,7 @@ import 'package:instagram_clone/screens/edit_post_screen.dart';
 import 'package:instagram_clone/screens/edit_profile_screen.dart';
 import 'package:instagram_clone/screens/login_screen.dart';
 import 'package:instagram_clone/screens/profile_screen.dart';
+import 'package:instagram_clone/screens/search_screen.dart';
 import 'package:instagram_clone/screens/sign_up_screen.dart';
 import 'package:instagram_clone/utils/constant.dart';
 import 'package:instagram_clone/utils/utils.dart';
@@ -48,6 +49,7 @@ class MyApp extends StatelessWidget {
           // useMaterial3: true,
         ),
         themeMode: ThemeMode.dark,
+        // home: LoginScreen(),
         home: StreamBuilder(
             stream: FirebaseAuth.instance.authStateChanges(),
             builder: (context, snapshot) {
@@ -61,9 +63,7 @@ class MyApp extends StatelessWidget {
                   child: Text(snapshot.error.toString()),
                 );
               }
-              if (snapshot.connectionState == ConnectionState.active) {
-                final userProvider = context.read<UserProvider>();
-                userProvider.refreshUser();
+              if (snapshot.hasData) {
                 return const ResponsiveLayout(
                     mobileLayout: MobileLayout(), webLayout: WebLayout());
               }
@@ -76,7 +76,8 @@ class MyApp extends StatelessWidget {
           CommentScreen.routeName: (context) => const CommentScreen(),
           ProfileScreen.routeName: (context) => const ProfileScreen(),
           EditProfileScreen.routeName: (context) => const EditProfileScreen(),
-          EditPostScreen.routeName: (context) => const EditPostScreen()
+          EditPostScreen.routeName: (context) => const EditPostScreen(),
+          SearchScreen.routeName: (context) => const SearchScreen()
         },
       ),
     );

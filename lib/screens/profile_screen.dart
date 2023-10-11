@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:instagram_clone/provider/user_provider.dart';
 import 'package:instagram_clone/screens/edit_profile_screen.dart';
 import 'package:instagram_clone/service/post_service.dart';
 import 'package:instagram_clone/service/storage_service.dart';
@@ -13,6 +14,7 @@ import 'package:instagram_clone/utils/firebase_constant.dart';
 import 'package:instagram_clone/utils/post_constant.dart';
 import 'package:instagram_clone/utils/user_constant.dart';
 import 'package:instagram_clone/utils/utils.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/post.dart';
@@ -136,6 +138,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 IconButton(
                     splashColor: Colors.transparent,
                     onPressed: () async {
+                      setState(() {
+                        _isLoading = true;
+                      });
                       await AuthService().logout();
                     },
                     icon: const Icon(Icons.logout))
@@ -313,13 +318,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
                                 itemCount: _users.length,
-                                itemBuilder: (context, index) => FollowPeopleCard(
-                                    user: _users[index],
-                                    onTap: () {
-                                      Navigator.of(context).pushNamed(
-                                          ProfileScreen.routeName,
-                                          arguments: _users[index]!.uid);
-                                    })),
+                                itemBuilder: (context, index) =>
+                                    FollowPeopleCard(
+                                        user: _users[index],
+                                        onTap: () {
+                                          Navigator.of(context).pushNamed(
+                                              ProfileScreen.routeName,
+                                              arguments: _users[index]!.uid);
+                                        })),
                           )
                         ],
                       )

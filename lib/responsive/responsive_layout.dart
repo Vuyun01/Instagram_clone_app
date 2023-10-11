@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:instagram_clone/provider/user_provider.dart';
 import 'package:instagram_clone/service/auth_service.dart';
 import 'package:instagram_clone/utils/constant.dart';
-import 'package:provider/provider.dart';
 
 class ResponsiveLayout extends StatelessWidget {
   const ResponsiveLayout(

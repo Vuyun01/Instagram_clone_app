@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:instagram_clone/provider/user_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../service/auth_service.dart';
 import '../utils/constant.dart';
@@ -15,6 +17,12 @@ class WebLayout extends StatefulWidget {
 class _WebLayoutState extends State<WebLayout> {
   int _currentPage = 0;
   PageController _pageController = PageController();
+  @override
+  void initState() {
+    Provider.of<UserProvider>(context, listen: false).refreshUser();
+    super.initState();
+  }
+
   @override
   void dispose() {
     _pageController.dispose();

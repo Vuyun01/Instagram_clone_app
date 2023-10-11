@@ -17,6 +17,11 @@ class _MobileLayoutState extends State<MobileLayout> {
   int _currentPage = 0;
   PageController _pageController = PageController();
   @override
+  void initState() {
+    Provider.of<UserProvider>(context, listen: false).refreshUser();
+    super.initState();
+  }
+  @override
   void dispose() {
     _pageController.dispose();
     super.dispose();

@@ -9,6 +9,7 @@ import 'package:instagram_clone/model/user.dart' as um;
 import 'package:instagram_clone/utils/user_constant.dart';
 
 class SearchScreen extends StatefulWidget {
+  static const String routeName = '/search';
   const SearchScreen({super.key});
 
   @override

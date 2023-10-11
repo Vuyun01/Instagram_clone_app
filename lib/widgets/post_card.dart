@@ -11,6 +11,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../model/post.dart';
+import '../service/auth_service.dart';
 
 class PostCard extends StatefulWidget {
   const PostCard({
@@ -27,7 +28,7 @@ class _PostCardState extends State<PostCard> {
   bool isAnimating = false;
   @override
   Widget build(BuildContext context) {
-    final user = context.read<UserProvider>().getUser;
+    final uid = AuthService().userID;
     final size = MediaQuery.of(context).size;
     return Padding(
       padding: EdgeInsets.only(bottom: size.height * 0.05),
@@ -41,7 +42,7 @@ class _PostCardState extends State<PostCard> {
               await PostService().likePost(
                   postId: widget.post.postid,
                   likes: widget.post.likes,
-                  userId: user!.uid);
+                  userId: uid);
               setState(() {
                 isAnimating = true;
               });
@@ -91,7 +92,7 @@ class PostCardHeader extends StatelessWidget {
   final Post post;
   @override
   Widget build(BuildContext context) {
-    final user = context.read<UserProvider>().getUser;
+    final uid = AuthService().userID;
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Row(
@@ -113,7 +114,7 @@ class PostCardHeader extends StatelessWidget {
             ),
           )),
           PopupMenuButton(
-              onSelected: user!.uid == post.uid
+              onSelected: uid == post.uid
                   ? (value) {
                       if (value == PostPopUpOptions.delete) {
                         showDialog(
@@ -130,7 +131,7 @@ class PostCardHeader extends StatelessWidget {
                                           await PostService()
                                               .deletePost(
                                             postId: post.postid,
-                                            userId: user.uid,
+                                            userId: uid,
                                           )
                                               .then((value) {
                                             if (value == 'success') {
@@ -176,7 +177,7 @@ class PostCardHeader extends StatelessWidget {
                     }
                   : (value) {},
               icon: const Icon(Icons.more_horiz),
-              itemBuilder: (context) => user.uid == post.uid
+              itemBuilder: (context) => uid == post.uid
                   ? const [
                       PopupMenuItem(
                           value: PostPopUpOptions.delete,
@@ -204,14 +205,14 @@ class PostCardBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final user = context.read<UserProvider>().getUser;
+    final uid = AuthService().userID;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           children: [
             LikeAnimation(
-              isAnimating: post.likes.contains(user?.uid),
+              isAnimating: post.likes.contains(uid),
               smallLike: true,
               child: IconButton(
                   splashColor: Colors.transparent,
@@ -219,9 +220,9 @@ class PostCardBody extends StatelessWidget {
                     await PostService().likePost(
                         postId: post.postid,
                         likes: post.likes,
-                        userId: user!.uid);
+                        userId: uid);
                   },
-                  icon: post.likes.contains(user?.uid)
+                  icon: post.likes.contains(uid)
                       ? const Icon(
                           Icons.favorite,
                           color: Colors.white,

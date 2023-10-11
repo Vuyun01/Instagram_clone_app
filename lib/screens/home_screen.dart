@@ -70,7 +70,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           ? size.width * 0.25
                           : 0),
                   child: ListView.builder(
-                    reverse: true,
                     itemCount: docs.length,
                     itemBuilder: (context, index) {
                       final post = Post.fromJson(docs[index].data());
